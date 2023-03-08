@@ -3,7 +3,6 @@
     <div class="content__title">
       <p class="bold text title">Nhân viên</p>
     </div>
-    <Input @inputValue="valueHandle($event)"/>
 
     <div class="content__button">
       <Button hierarchy="main" name="Thêm mới nhân viên" @click="$emit('openForm')" />
@@ -18,6 +17,7 @@
           placeholder="Tìm theo tên"
           type="search"
           iconName="icon-search"
+          @inputValue="getSearchKey($event)"
         />
       </div>
       <Icon title="Refresh data" @click="refreshData" iconName="icon-refresh" iconSize="24" />
@@ -71,6 +71,9 @@ export default {
     },
     valueHandle(e) {
       console.log(123123, e);
+    },
+    getSearchKey(e) {
+      this.$store.commit('searchTerm', e)
     }
   },
   watch: {

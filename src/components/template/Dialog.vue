@@ -1,5 +1,5 @@
 <template>
-  <Overlay :show="false" padding="24px">
+  <Overlay :zIndexVal="99999" :show="false" padding="24px">
     <div class="dialog">
       <div class="dialog-title" v-if="title">
         {{ title }}

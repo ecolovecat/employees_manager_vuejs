@@ -5,7 +5,7 @@ const store = createStore({
     contextShow: false,
     loading: false,
     fixData: {},
-    validationErrors: [],
+    validationErrors: {},
     showValidate: false,
     searchTerm: "",
     inputValue: "",
@@ -29,7 +29,7 @@ const store = createStore({
       state.fixData = data
     },
     validationErrors(state, data) {
-      state.validationErrors.push(data)
+      state.validationErrors = data
     },
     showValidate(state, data) {
       state.showValidate = data

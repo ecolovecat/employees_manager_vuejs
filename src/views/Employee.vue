@@ -35,7 +35,7 @@
     <template v-slot:content>
       <div class="dialog__content-wrapper">
         <Icon iconName="icon-alert " iconSize="36" />
-        <p class="dialog__content text"> trường này hiện lỗi </p>
+        <p class="dialog__content text"> {{$store.state.validationErrors}} </p>
       </div>
     </template>
 
@@ -61,9 +61,9 @@
 </template>
 
 <script>
-import Header from "@/components/Header.vue";
-import Sidebar from "@/components/Sidebar.vue";
-import Content from "@/components/Content.vue";
+import Header from "@/components/TheHeader.vue";
+import Sidebar from "@/components/TheSidebar.vue";
+import Content from "@/components/TheContent.vue";
 import AddForm from "@/components/Form/AddForm.vue";
 import FixForm from "@/components/Form/FixForm.vue";
 import Dialog from "@/components/template/Dialog.vue";
@@ -100,6 +100,7 @@ export default {
       this.showForm = true;
     },
     closeForm() {
+      this.$store.commit('validationErrors', {})
       this.showForm = false;
     },
     deleteEmployee() {
@@ -129,6 +130,7 @@ export default {
       console.log(employee);
     },
     closeValidate() {
+      this.$store.commit('validationErrors', {})
       this.$store.commit('showValidate', false)
     }
   },
@@ -187,14 +189,11 @@ input[type="checkbox"]:checked {
 
 .dialog__button-wrapper {
   display: flex;
-  justify-content: space-between;
+  align-content: center;
+  justify-content: center;
 }
 
 .bold {
-  font-family: Roboto Bold;
-}
-
-.italic {
-  font-family: Roboto Italic;
+  font-family: Roboto;
 }
 </style>

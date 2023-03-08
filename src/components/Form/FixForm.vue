@@ -58,7 +58,7 @@
               label="Số CMND"
               :value="$store.state.fixData.IdentityNumber"
             />
-            <Input type="date" validate="[birth]" label="Ngày sinh" />
+            <Input type="date" validate="[birth]" label="Ngày cấp" />
           </div>
           <div class="form-input">
             <Input
@@ -94,25 +94,25 @@
           />
           <Input
             type="text"
-            :value="$store.state.fixData.Address"
-            label="Địa chỉ"
+            :value="$store.state.fixData.MartialStatusName"
+            label="Tình trạng hôn nhân"
           />
         </div>
         <div class="form-input--merge">
           <Input
             type="text"
-            :value="$store.state.fixData.IdentityNumber"
-            label="Tài khoản ngân hàng"
+            :value="$store.state.fixData.EducationalBackgroundName"
+            label="Trình độ học vấn"
+          />
+          <Input
+            type="text"
+            :value="$store.state.fixData.PersonalTaxCode"
+            label="Mã số thuế"
           />
           <Input
             type="text"
             :value="$store.state.fixData.Salary"
-            label="Tên ngân hàng"
-          />
-          <Input
-            type="text"
-            :value="$store.state.fixData.IdentityPlace"
-            label="Chi nhánh"
+            label="Lương"
           />
         </div>
       </div>

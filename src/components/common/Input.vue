@@ -100,7 +100,6 @@ export default {
     },
   },
   mounted() {
-    // console.log(3123123,this.inputValue);
   },
   methods: {
     /**
@@ -108,7 +107,6 @@ export default {
      * Trần Phương Duy
      */
     emitInputValue() {
-      // console.log("ok");
       this.$emit('inputValue', this.inputValue)
       // this.$store.commit("inputValue", this.inputValue);
     },

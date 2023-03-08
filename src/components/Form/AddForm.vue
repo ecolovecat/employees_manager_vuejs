@@ -9,7 +9,7 @@
               ref="inputCode"
               :type="'text'"
               label="Mã"
-              @inputValue="employeeData.test=$event"
+              @inputValue="employeeData.test = $event"
               :value="employeeCode"
             />
             <Input validate="['required']" :type="'text'" label="Tên" />
@@ -29,7 +29,12 @@
         </div>
         <div class="form-basic--right">
           <div class="form-input--merge form-input">
-            <Input type="date" validate="['birth']" label="Ngày sinh" @inputValue="employeeData.birth=$event" />
+            <Input
+              type="date"
+              validate="['birth']"
+              label="Ngày sinh"
+              @inputValue="employeeData.birth = $event"
+            />
 
             <Input
               type="radio"
@@ -48,7 +53,7 @@
               title="Số chứng minhn nhân dân"
               label="Số CMND"
             />
-            <Input type="date" validate="['birth']" label="Ngày làm" />
+            <Input type="date" validate="['birth']" label="Ngày cấp" />
           </div>
           <div class="form-input">
             <Input type="text" label="Nơi cấp" />
@@ -68,12 +73,12 @@
             label="ĐT cố định"
           />
           <Input type="text" validate="['email']" label="Email" />
-          <Input type="text" label="Địa chỉ" />
+          <Input type="text" label="Tình trạng hôn nhân" />
         </div>
         <div class="form-input--merge">
-          <Input type="text" label="Tài khoản ngân hàng" />
-          <Input type="text" label="Tên ngân hàng" />
-          <Input type="text" label="Chi nhánh" />
+          <Input type="text" label="Trình độ học vấn" />
+          <Input type="text" label="Mã số thuế" />
+          <Input type="text" label="Lương" />
         </div>
       </div>
     </template>
@@ -84,7 +89,7 @@
       </div>
       <div class="button-left">
         <Button @click="$emit('close')" name="Hủy" hierarchy="secondary" />
-        <!-- <button></button> -->
+        <button ref="lastButton" id="button-hidden"></button>
       </div>
     </template>
   </Form>
@@ -108,7 +113,7 @@ export default {
   data() {
     return {
       employeeCode: "",
-      employeeData: {}
+      employeeData: {},
     };
   },
   props: {
@@ -132,6 +137,11 @@ export default {
     console.log(this.employeeCode);
   },
   async mounted() {
+    this.$refs.lastButton.addEventListener("keydown", (event) => {
+      if (event.key === "Tab") {
+        this.focusInput();
+      }
+    });
     // focus when open form
     this.focusInput();
   },
@@ -149,7 +159,8 @@ export default {
           )
         );
         console.log(uniqueErrors);
-        this.$store.commit("showValidate", false);
+        this.$store.commit("showValidate", true);
+        this.$store.commit("validationErrors", uniqueErrors)
       }
     },
     focusInput() {
@@ -174,6 +185,11 @@ export default {
 </script>
 
 <style lang="scss">
+#button-hidden {
+  background-color: #fff;
+  outline: none;
+  border: none;
+}
 .form-content {
   display: flex;
   flex-direction: column;

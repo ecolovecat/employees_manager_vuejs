@@ -27,7 +27,10 @@
         <tbody>
           <tr
             v-for="(row, index) in filteredData"
-            v-show="index < recordsPerPage"
+            v-show="
+              index < recordsPerPage * currentPage &&
+              index > (currentPage - 1) * recordsPerPage
+            "
             :key="index"
           >
             <td>
@@ -119,11 +122,41 @@
             </ul>
           </div>
           <div class="paginate-record">
-            1-{{ parseInt(filteredData.length / recordsPerPage) + 1 }} bản ghi
+            {{ currentPage }}-{{
+              parseInt(filteredData.length / recordsPerPage) + 1
+            }}
+            bản ghi
           </div>
           <div class="paginate-icon">
-            <Icon iconName="icon-left-arrow-enable" iconSize="24" />
-            <Icon iconName="icon-right-arrow-enable" iconSize="24" />
+            <Icon
+              iconName="icon-left-arrow-disable"
+              v-show="currentPage == 1"
+              iconSize="24"
+            />
+            <Icon
+              v-show="currentPage != 1"
+              iconName="icon-left-arrow-enable"
+              iconSize="24"
+              @click="prePage"
+            />
+            <Icon
+              v-show="
+                currentPage ==
+                parseInt(filteredData.length / recordsPerPage) + 1
+              "
+              iconName="icon-right-arrow-disable"
+              iconSize="24"
+              @click="nextPage"
+            />
+            <Icon
+              v-show="
+                currentPage !=
+                parseInt(filteredData.length / recordsPerPage) + 1
+              "
+              iconName="icon-right-arrow-enable"
+              iconSize="24"
+              @click="nextPage"
+            />
           </div>
         </div>
       </div>
@@ -155,6 +188,7 @@
 <script>
 import Icon from "./Icon.vue";
 import ContextMenu from "../template/ContextMenu.vue";
+// import removeVnese from "../../utils/remove-vnese-tones"
 export default {
   name: "TablePage",
   emits: ["doubleClick"],
@@ -174,6 +208,7 @@ export default {
       comboboxShow: false,
       contextMenuShow: false,
       rows: [],
+      filteredData: [],
       datas: [],
       isCheck: false,
       isCheckAll: false,
@@ -182,14 +217,19 @@ export default {
       selectedOption: "10 bản ghi",
       deletedId: "",
       recordsPerPage: 10,
+      currentPage: 1,
       deletingIndex: null,
       deleting: false,
     };
   },
+  updated() {},
   async mounted() {
     // fetch data
     document.addEventListener("click", this.handleOutsideClick);
     this.fetchData();
+    console.log(123123, this.$store.state.searchTerm);
+    this.filteredData = this.rows;
+    this.handleSearch();
     // console.log('fadfd',await this.rows);
   },
   beforeUnmount() {
@@ -200,19 +240,16 @@ export default {
      * Truyền dữ liệu ở ô tìm kiếm
      * Trần Phương Duy
      */
-    filteredData() {
-      let searchTerm = this.$store.state.searchTerm;
-      console.log(312312, searchTerm);
-      if (!searchTerm) {
-        return this.rows;
-      }
-      const term = searchTerm.toLowerCase();
-      return this.rows.filter(
-        (row) =>
-          row.name.toLowerCase().includes(term) ||
-          row.email.toLowerCase().includes(term)
-      );
-    },
+    // filteredData() {
+
+    //   let searchTerm = this.$store.state.searchTerm;
+    //   searchTerm = removeVnese(searchTerm)
+    //   console.log(searchTerm);
+    //   if (!searchTerm) {
+    //     return this.rows;
+    //   }
+    //   return this.rows;
+    // },
     /**
      * Hiện context
      * Trần Phương Duy
@@ -225,6 +262,34 @@ export default {
     },
   },
   methods: {
+    nextPage() {
+      if (
+        this.currentPage <
+        parseInt(this.filteredData.length / this.recordsPerPage) + 1
+      ) {
+        this.$store.commit("loading", true);
+        setTimeout(() => {
+          this.currentPage++;
+          this.$store.commit("loading", false);
+        }, 1000);
+      }
+    },
+    prePage() {
+      if (this.currentPage > 1) {
+        this.$store.commit("loading", true);
+        setTimeout(() => {
+          this.$store.commit("loading", false);
+          this.currentPage--;
+        }, 500);
+      }
+    },
+    async handleSearch() {
+      try {
+        console.log(this.$store.state("searchTerm"));
+      } catch (error) {
+        console.log(error);
+      }
+    },
     /**
      * Handle if click out side the edit action or outside the context menu, if yes, not show the context menu
      * Modified by Tran Phuong Duy 3/3/2023
@@ -247,9 +312,14 @@ export default {
      * Trần Phương Duy
      */
     selectOption(option) {
-      this.comboboxShow = false;
+      this.$store.commit("loading", true);
+      setTimeout(() => {
+        this.$store.commit("loading", false);
+        this.currentPage = 1;
+        this.comboboxShow = false;
 
-      this.selectedOption = option;
+        this.selectedOption = option;
+      }, 500);
     },
     /**
      * Fetch data
@@ -290,7 +360,7 @@ export default {
       }
     },
     deleteEmployee() {
-      this.deleting = false
+      this.deleting = false;
       this.$store.commit("contextShow", false);
       let eId = this.deletedId;
       this.$store.commit("eId", eId);
@@ -392,10 +462,28 @@ export default {
         if (!this.deleting) {
           this.$store.commit("clickDelete", false);
           this.rows.splice(this.deletingIndex, 1);
-          this.deleting = true
+          this.deleting = true;
         }
       },
       deep: true,
+    },
+    "$store.state.searchTerm": function (newVal) {
+      console.log(newVal);
+      //   try {
+      //     let searchTerm = this.$store.state.searchTerm;
+      //     searchTerm = removeVnese(searchTerm);
+      //     console.log(searchTerm);
+      //     const res = await fetch(
+      //       "https://apidemo.laptrinhweb.edu.vn/api/v1/Employees/" + employeeId
+      //     );
+
+      //     if (!searchTerm) {
+      //       return this.rows;
+      //     }
+      //     return this.rows;
+      //   } catch (error) {
+      //     console.log(error);
+      //   }
     },
   },
 };

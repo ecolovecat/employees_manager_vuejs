@@ -1,5 +1,5 @@
 <template>
-  <div v-if="show">
+  <div v-if="show" :style="{zIndex:zIndexVal}" class="overlay-wrapper">
     <div class="overlay" @click="$emit('close')"></div>
     <div class="overlay-content" :style="{padding: padding}">
       <!-- Your overlay content goes here -->
@@ -16,12 +16,23 @@ export default {
   ],
   props: {
     show: Boolean,
-    padding: String
+    padding: String,
+    zIndexVal: {
+      type: String,
+      default: '9999'
+    }
   }
 }
 </script>
 
 <style scoped>
+.overlay-wrapper {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+}
 .overlay {
   position: fixed;
   top: 0;
