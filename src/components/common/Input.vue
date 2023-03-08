@@ -103,7 +103,7 @@ export default {
   },
   methods: {
     /**
-     * Truyền input value lên store
+     * Pass input from value to store
      * Trần Phương Duy
      */
     emitInputValue() {
@@ -111,7 +111,7 @@ export default {
       // this.$store.commit("inputValue", this.inputValue);
     },
     /**
-     * Set màu cho border invalid
+     * Set color for border invalid
      * Trần Phương Duy
      */
     setValidationResult(isValid, errorMessage) {
@@ -119,7 +119,7 @@ export default {
       this.borderClass = isValid ? "valid" : "error";
     },
     /**
-     * Validte dữ liệu
+     * Validte data input
      * Trần Phương Duy
      */
     validateInput() {

@@ -237,21 +237,7 @@ export default {
   },
   computed: {
     /**
-     * Truyền dữ liệu ở ô tìm kiếm
-     * Trần Phương Duy
-     */
-    // filteredData() {
-
-    //   let searchTerm = this.$store.state.searchTerm;
-    //   searchTerm = removeVnese(searchTerm)
-    //   console.log(searchTerm);
-    //   if (!searchTerm) {
-    //     return this.rows;
-    //   }
-    //   return this.rows;
-    // },
-    /**
-     * Hiện context
+     * Show context
      * Trần Phương Duy
      */
     contextShow() {
@@ -308,7 +294,7 @@ export default {
       }
     },
     /**
-     * Chọn option phân trang
+     * Select option at paginate
      * Trần Phương Duy
      */
     selectOption(option) {
@@ -423,32 +409,26 @@ export default {
         this.deletedId = employee.EmployeeId;
         console.log(this.deletedId);
         this.deletingIndex = index;
-        // const resDelete = await fetch('https://apidemo.laptrinhweb.edu.vn/api/v1/Employees/' + employeeId, {method: 'DELETE'});
-
-        // employee = await resDelete.json()
-        // console.log(employee);
-
-        // Get direction of poiter x and y, then set to top and right of the context menu appearance, then set to the data contextMenuPosition
       } catch (error) {
         console.log(error);
       }
     },
     /**
-     * check khi click bên ngoài context
+     * Check if click outside context
      * Trần Phương Duy
      */
     clickOutsideHandle() {
       this.contextMenuShow = false;
     },
     /**
-     * check tất cả
+     * check all checkbox
      * Trần Phương Duy
      */
     checkAll() {
       this.isCheck = !this.isCheck;
     },
     /**
-     * check khi ấn nút kết quả
+     * check if press checkall
      * Trần Phương Duy
      */
     checkHanlde() {
